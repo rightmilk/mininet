@@ -1,1 +1,7 @@
+# 0214 第一週筆記
 
+## ubuntu環境安裝
+* 爬山演算法一般存在以下問題：<br>
+```
+git clone https://github.com/mininet/mininet.git
+```
