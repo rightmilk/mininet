@@ -1,7 +1,7 @@
 # 0221 第二週筆記
 
 ## 
-* 安裝mininet
+* Linux network namespace 原理
 ```
 user> git clone https://github.com/mininet/mininet.git
 user> cd mininet
@@ -16,3 +16,4 @@ su> mn
 mininet>　xterm h1
 mininet>　xterm h2
 ```
+![](./w2-1.jpg)
