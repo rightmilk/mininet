@@ -8,7 +8,7 @@
 # ip link add type veth  #建立虛擬網路卡(Virtual Ethernet)，一對的網路卡
 # ip link set [veth0] netns [net0]  #將網路卡新增到命名空間中
 ```
-### 範例1-網路卡方面進行隔離
+### 範例1
 ![](./w2-1.png)
 1. 在root端建立一個bridge
 ```
@@ -82,3 +82,4 @@
 ```
 ### 範例2-透過虛擬router進行連線
 ![](./w2-2.png)
+1. 
