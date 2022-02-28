@@ -162,3 +162,24 @@
 # ip netns exec net2 ping 10.0.1.1 -c 1
 
 ```
+## mininet基本配置
+* 基本指令
+```
+# mn ##產生最基本的架構
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) 
+*** Configuring hosts
+h1 h2 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Starting CLI:
+```
+![](./w2-4.png)
