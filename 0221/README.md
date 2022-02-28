@@ -129,3 +129,36 @@
 ```
 ### 作業
 ![](./w2-3.png)
+```
+# ip netns add net0
+# ip netns add net1
+# ip netns add net2
+# ip link add type veth
+# ip link add type veth
+# ip link set dev veth0 netns net0
+# ip link set dev veth1 netns net1
+# ip link set dev veth2 netns net1
+# ip link set dev veth3 netns net2
+
+# ip netns exec net0 ip link set dev veth0 name eth0
+# ip netns exec net1 ip link set dev veth1 name eth0
+# ip netns exec net1 ip link set dev veth2 name eth1
+# ip netns exec net2 ip link set dev veth3 name eth0
+
+# ip netns exec net0 ip addr add 10.0.1.1/24 dev eth0
+# ip netns exec net0 ip link set dev eth0 up
+# ip netns exec net0 ip route add default via 10.0.1.254
+
+# ip netns exec net1 ip link set dev eth0 up
+# ip netns exec net1 ip addr add 10.0.1.254/24 dev eth0
+# ip netns exec net1 ip link set dev eth1 up
+# ip netns exec net1 ip addr add 10.0.2.254/24 dev eth1
+
+# ip netns exec net2 ip addr add 10.0.2.1/24 dev eth0
+# ip netns exec net2 ip link set dev eth0 up
+# ip netns exec net2 ip route add default via 10.0.2.254
+
+# ip netns exec net0 ping 10.0.2.1 -c 1
+# ip netns exec net2 ping 10.0.1.1 -c 1
+
+```
