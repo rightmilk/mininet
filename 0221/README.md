@@ -80,6 +80,52 @@
 # ip netns del net2
 # ip netns ls
 ```
-### 範例2-透過虛擬router進行連線
+### 範例2-模擬不同網域如何透過vrouter傳輸資料
 ![](./w2-2.png)
-1. 
+1. 確認是否有開啟路由功能
+```
+# echo 1 > /proc/sys/net/ipv4/ip_forward  #開啟路由
+# echo 0 > /proc/sys/net/ipv4/ip_forward  #關閉路由
+# cat /proc/sys/net/ipv4/ip_forward  #查看路由
+```
+2. 創建兩個空間，設定網路卡、路由及IP
+```
+# ip netns add net0
+# ip netns add net1
+# ip link add type veth
+# ip link add type veth
+
+# ip link set dev veth1 netns net0
+# ip netns exec net0 ip link set dev veth1 name eth0
+# ip netns exec net0 ip addr add 10.0.1.1/24 dev eth0
+# ip netns exec net0 ip link set dev eth0 up
+# ip netns exec net0 ip route add default via 10.0.1.254  #設定路由
+# ip netns exec net0 ip addr show
+# ip netns exec net0 ip route show
+
+# ip link set dev veth3 netns net1
+# ip netns exec net1 ip link set dev veth3 name eth0
+# ip netns exec net1 ip addr add 10.0.2.1/24 dev eth0
+# ip netns exec net1 ip link set dev eth0 up
+# ip netns exec net1 ip route add default via 10.0.2.254  #設定路由
+# ip netns exec net1 ip addr show
+# ip netns exec net1 ip route show
+```
+3. 設定vrouterIP
+```
+# ifconfig veth0 up
+# ifconfig veth2 up
+# ip addr add 10.0.1.254/24 dev veth0
+# ip addr add 10.0.2.254/24 dev veth2
+# ifconfig
+# ip netns exec net0 ping 10.0.2.1  #測試是否成功
+```
+4. 移除所有配置
+```
+# ip link delete veth0
+# ip link delete veth2
+# ip netns del net0
+# ip netns del net1
+```
+### 作業
+![](./w2-3.png)
