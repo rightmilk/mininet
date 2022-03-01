@@ -236,6 +236,22 @@ c0
 s1 s2 s3 ...
 *** Starting CLI:
 
+# mn --topo tree,2
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 h3 h4 
+*** Adding switches:
+s1 s2 s3 
+*** Adding links:
+(s1, s2) (s1, s3) (s2, h1) (s2, h2) (s3, h3) (s3, h4) 
+*** Configuring hosts
+h1 h2 h3 h4 
+*** Starting controller
+c0 
+*** Starting 3 switches
+s1 s2 s3 ...
+*** Starting CLI:
 ```
 
 * mn 產生的架構圖
@@ -245,3 +261,8 @@ s1 s2 s3 ...
 * mn --topo linear,3 產生的架構圖
 
 ![](./w2-5.png)
+
+* mn --topo tree,2 產生的架構圖
+
+![](./w2-6.png)
+
