@@ -3,10 +3,10 @@
 ## network namespace 創造不同機器互相通訊
 * 相關指令
 ```
-# ip netns add [net1]  #增加命名空間
-# ip netns exec [net1] +指令  #在命名空間執行指令
+# ip netns add net1  #增加命名空間
+# ip netns exec net1 +指令  #在命名空間執行指令
 # ip link add type veth  #建立虛擬網路卡(Virtual Ethernet)，一對的網路卡
-# ip link set [veth0] netns [net0]  #將網路卡新增到命名空間中
+# ip link set veth0 netns net0  #將網路卡新增到命名空間中
 ```
 ### 範例1
 ![](./w2-1.png)
@@ -181,5 +181,67 @@ c0
 *** Starting 1 switches
 s1 ...
 *** Starting CLI:
+
+mininet> links
+h1-eth0<->s1-eth1 (OK OK) 
+h2-eth0<->s1-eth2 (OK OK) 
+
+mininet> net
+h1 h1-eth0:s1-eth1
+h2 h2-eth0:s1-eth2
+s1 lo:  s1-eth1:h1-eth0 s1-eth2:h2-eth0
+c0
+
+mininet> xterm h1  #叫出h1的終端機
+
+mininet> link s1 h2 down  #模擬截點斷掉
+mininet> link s1 h2 up
+
+[h1]# ifconfig h1-eth0 0  #清除網路設定
+[h1]# ip addr add 192.168.0.1/24 brd + dev h1-eth0  #設定IP方法1
+[h1]# ip a a 192.168.0.1/24 brd + dev h1-eth0  #設定IP方法1-縮寫寫法
+[h2]# ifconfig h2-eth0 192.168.0.2 netmask 255.255.255.0  #設定IP方法2
+
+# mn --topo single,3  #一台交換機，三台主機
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 h3 
+*** Adding switches:
+s1 
+*** Adding links:
+(h1, s1) (h2, s1) (h3, s1) 
+*** Configuring hosts
+h1 h2 h3 
+*** Starting controller
+c0 
+*** Starting 1 switches
+s1 ...
+*** Starting CLI:
+
+# mn --topo linear,3
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+h1 h2 h3 
+*** Adding switches:
+s1 s2 s3 
+*** Adding links:
+(h1, s1) (h2, s2) (h3, s3) (s2, s1) (s3, s2) 
+*** Configuring hosts
+h1 h2 h3 
+*** Starting controller
+c0 
+*** Starting 3 switches
+s1 s2 s3 ...
+*** Starting CLI:
+
 ```
+
+* mn 產生的架構圖
+
 ![](./w2-4.png)
+
+* mn --topo linear,3 產生的架構圖
+
+![](./w2-5.png)
