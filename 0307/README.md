@@ -45,22 +45,22 @@ if '__main__'==__name__:
   ```
   #!/usr/bin/python
 
-from mininet.cli import CLI
-from mininet.net import Mininet
-from mininet.link import Link,TCLink,Intf
+  from mininet.cli import CLI
+  from mininet.net import Mininet
+  from mininet.link import Link,TCLink,Intf
 
-if '__main__'==__name__:
-  net=Mininet(link=TCLink)
-  h1=net.addHost('h1')
-  h2=net.addHost('h2')
-  Link(h1,h2)
-  net.build()
-  h1.cmd("ifconfig h1-eth0 0")
-  h1.cmd("ip a a 192.168.1.1/24 brd + dev h1-eth0")
-  h2.cmd("ifconfig h2-eth0 0")
-  h2.cmd("ip a a 192.168.1.2/24 brd + dev h2-eth0")
-  CLI(net)
-  net.stop()
+  if '__main__'==__name__:
+    net=Mininet(link=TCLink)
+    h1=net.addHost('h1')
+    h2=net.addHost('h2')
+    Link(h1,h2)
+    net.build()
+    h1.cmd("ifconfig h1-eth0 0")
+    h1.cmd("ip a a 192.168.1.1/24 brd + dev h1-eth0")
+    h2.cmd("ifconfig h2-eth0 0")
+    h2.cmd("ip a a 192.168.1.2/24 brd + dev h2-eth0")
+    CLI(net)
+    net.stop()
   ```
 
 ### 範例三-創建三台機器，不同網域實現互ping
