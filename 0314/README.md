@@ -253,8 +253,7 @@ h3> ettercap -G
 
 ![](w5-10.png)
 
-### 範例二-透過欺騙交換機來竊取封包-port stealing
-若是先設好靜態arp也無效
+### 範例二-透過欺騙交換機來竊取封包-port stealing(若是先設好靜態arp也無效)
 
 * 指令
 ```
