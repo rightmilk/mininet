@@ -135,7 +135,7 @@ gnuplot gnuplot-plot
 mininet> xterm h1 h2 h2 h2
 h2(1)> ./process.sh
 h2(2)> ./plot-throughput.sh
-h2(3)> iperf -s -i 1 >a
+h2(3)> iperf -s -i 1 > a
 h1> iperf -c 192.168.2.1 -t 1000
 ```
 
