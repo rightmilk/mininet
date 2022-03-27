@@ -43,7 +43,7 @@ if '__main__'==__name__:
   net.stop()
 ```
 
-* 指令
+* 測試指令
 ```
 h1> ping -i 0.01 -c 1000 192.168.2.1  ##-i:每0.01秒傳送一次(本來預設是1秒)
 ```
@@ -191,7 +191,7 @@ h1> iperf -c 192.168.2.1 -t 1000
 # cd ..
 # cp /boot/config-4.15.0-142-generic .config
 # make menuconfig
-# make
+# make  ##更改完後重新make
 ``` 
 ![](w6-4.png)
 
