@@ -19,7 +19,7 @@ if '__main__'==__name__:
   h1=net.addHost('h1')
   h2=net.addHost('h2')
   r=net.addHost('r')
-  h1r = {'bw':100,'delay':'1ms','loss':0}  ## delay:延遲時間 loss:遺失率
+  h1r = {'bw':100,'delay':'1ms','loss':10}  ## delay:延遲時間 loss:遺失率
   net.addLink(h1, r, cls=TCLink , **h1r)
   h2r = {'bw':100,'delay':'1ms','loss':0}
   net.addLink(h2, r, cls=TCLink , **h2r)
@@ -55,7 +55,42 @@ loss = (1-0.1)*1*1*(1-0.1)=0.81
 ```
 # sed -i '/^$/d' process.sh  ##刪除空白行
 ```
+* 3-1.py
+```
+#!/usr/bin/python
 
+from mininet.cli import CLI
+from mininet.net import Mininet
+from mininet.link import Link,TCLink,Intf
+
+if '__main__'==__name__:
+  net=Mininet(link=TCLink)
+  h1=net.addHost('h1')
+  h2=net.addHost('h2')
+  r=net.addHost('r')
+  h1r = {'bw':100,'delay':'1ms','loss':0}  ## delay:延遲時間 loss:遺失率
+  net.addLink(h1, r, cls=TCLink , **h1r)
+  h2r = {'bw':100,'delay':'1ms','loss':0}
+  net.addLink(h2, r, cls=TCLink , **h2r)
+  Link(h1,r)
+  Link(h2,r)
+  net.build()
+
+  h1.cmd("ifconfig h1-eth0 0")
+  h1.cmd("ip a a 192.168.1.1/24 brd + dev h1-eth0")
+  h1.cmd("ip route add default via 192.168.1.254")
+  h2.cmd("ifconfig h2-eth0 0")
+  h2.cmd("ip a a 192.168.2.1/24 brd + dev h2-eth0")
+  h2.cmd("ip route add default via 192.168.2.254")
+
+  r.cmd("ifconfig r-eth0 0")
+  r.cmd("ifconfig r-eth1 0")
+  r.cmd("ip a a 192.168.1.254/24 brd + dev r-eth0")
+  r.cmd("ip a a 192.168.2.254/24 brd + dev r-eth1")
+  r.cmd("echo 1 > /proc/sys/net/ipv4/ip_forward")
+  CLI(net)
+  net.stop()
+```
 * process.sh: 讀取每一行並過濾出所需資訊
 ```
 filename='a'
@@ -131,7 +166,7 @@ gnuplot gnuplot-plot
 ```
 * 執行指令
 ```
-# ./3.py
+# ./3-1.py
 mininet> xterm h1 h2 h2 h2
 h2(1)> ./process.sh
 h2(2)> ./plot-throughput.sh
