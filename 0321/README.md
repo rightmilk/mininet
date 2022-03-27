@@ -156,6 +156,7 @@ h1> iperf -c 192.168.2.1 -t 1000
 # cd ..
 # cp /boot/config-4.15.0-142-generic .config
 # make menuconfig
+# make
 ``` 
 ![](w6-4.png)
 
