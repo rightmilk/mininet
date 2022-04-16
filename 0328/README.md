@@ -136,7 +136,7 @@ X: return EXIT_FAILURE;
 
 ##用gnuplot繪圖進行比較
 # gnuplot
-gnuplot> plot "psnr1" with linespoints, "psnr2" with lines points
+gnuplot> plot "psnr1" with linespoints, "psnr2" with linespoints
 ```
 ### 範例二-更改遺失率觀察視訊串流的丟失情形
 * 3-1.py
