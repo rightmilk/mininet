@@ -75,6 +75,8 @@ if '__main__' == __name__:
 ## SSH Tunnel 的應用
 ### 範例一-透過SSH Tunnel連到外網
 
+![](w11-2.jpg)
+
 * lab2.py
 ```
 #!/usr/bin/python
@@ -136,6 +138,9 @@ h1> firefox 127.0.0.1:5555
 ```
 
 ### 範例二-從外網連進來remote port forwarding
+
+![](w11-3.jpg)
+
 * lab3.py
 ```
 #!/usr/bin/python
