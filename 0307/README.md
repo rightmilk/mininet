@@ -25,7 +25,7 @@ if '__main__'==__name__:
 
   * 執行1.py
   ```
-  # chomod +x 1.py
+  # chmod +x 1.py
   # ./1.py
   mininet> xterm h1 h2  #開出h1 h2終端
 
