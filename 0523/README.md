@@ -308,6 +308,8 @@ mininet> link s1 s2 up  ##模擬連線恢復
 ```
 ### [範例六-group-select](http://csie.nqu.edu.tw/smallko/sdn/group-select.htm)
 
+![](W15-5.png)
+
 * rule2.sh
 ```
 
