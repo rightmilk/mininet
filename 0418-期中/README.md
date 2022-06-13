@@ -166,74 +166,102 @@ if '__main__' == __name__:
 ```
 #!/usr/bin/python
 
-from mininet.net import Mininet
-from mininet.node import OVSKernelSwitch, Host
 from mininet.cli import CLI
-from mininet.link import TCLink, Intf
-from mininet.log import setLogLevel, info
-from subprocess import call
+from mininet.net import Mininet
+from mininet.link import Link,TCLink,Intf
 
+if '__main__'==__name__:
+  net=Mininet(link=TCLink)
+  h1=net.addHost('h1')
+  h2=net.addHost('h2')
+  h3=net.addHost('h3')
+  h4=net.addHost('h4')
+  h5=net.addHost('h5')
+  h6=net.addHost('h6')
+  s1=net.addHost('s1')
+  s2=net.addHost('s2')
 
-def myNetwork():
+  h1s1 = {'bw':100,'delay':'1ms','loss':0}
+  net.addLink(h1, s1, cls=TCLink , **h1s1)
+  h2s1 = {'bw':100,'delay':'1ms','loss':0}
+  net.addLink(h2, s1, cls=TCLink , **h2s1)
+  h3s1 = {'bw':100,'delay':'1ms','loss':0}
+  net.addLink(h3, s1, cls=TCLink , **h3s1)
+  h4s2 = {'bw':100,'delay':'1ms','loss':0}
+  net.addLink(h4, s2, cls=TCLink , **h4s2)
+  h5s2 = {'bw':100,'delay':'1ms','loss':0}
+  net.addLink(h5, s2, cls=TCLink , **h5s2)
+  h6s2 = {'bw':100,'delay':'1ms','loss':0}
+  net.addLink(h6, s2, cls=TCLink , **h6s2)
+  s1s2 = {'bw':10,'delay':'1ms','loss':0}
+  net.addLink(s1, s2, cls=TCLink , **s1s2)
 
-    net = Mininet(topo=None,
-                       build=False,
-                       ipBase='10.0.0.0/8')
+  Link(h1,s1)
+  Link(h2,s1)
+  Link(h3,s1)
+  Link(h4,s2)
+  Link(h5,s2)
+  Link(h6,s2)
+  Link(s1,s2)
 
-    info( '*** Adding controller\n' )
-    info( '*** Add switches/APs\n')
-    s1 = net.addSwitch('s1', cls=OVSKernelSwitch)
-    s2 = net.addSwitch('s2', cls=OVSKernelSwitch)
+  net.build()
 
-    info( '*** Add hosts/stations\n')
-    h6 = net.addHost('h6', cls=Host, ip='10.0.0.6', defaultRoute=None)
-    h4 = net.addHost('h4', cls=Host, ip='10.0.0.4', defaultRoute=None)
-    h2 = net.addHost('h2', cls=Host, ip='10.0.0.2', defaultRoute=None)
-    h3 = net.addHost('h3', cls=Host, ip='10.0.0.3', defaultRoute=None)
-    h5 = net.addHost('h5', cls=Host, ip='10.0.0.5', defaultRoute=None)
-    h1 = net.addHost('h1', cls=Host, ip='10.0.0.1', defaultRoute=None)
-
-    info( '*** Add links\n')
-    net.addLink(h1, s1)
-    net.addLink(h2, s1)
-    net.addLink(h3, s1)
-    net.addLink(h4, s2)
-    net.addLink(h5, s2)
-    net.addLink(h6, s2)
-    net.addLink(s1, s2)
-
-    h1s1 = {'bw':100,'delay':'1ms','loss':0}
-    h2s1 = {'bw':100,'delay':'1ms','loss':0}
-    h3s1 = {'bw':100,'delay':'1ms','loss':0}
-    h4s2 = {'bw':100,'delay':'1ms','loss':0}
-    h5s2 = {'bw':100,'delay':'1ms','loss':0}
-    h6s2 = {'bw':100,'delay':'1ms','loss':0}
-    s1s2 = {'bw':10,'delay':'1ms','loss':0}
-
-    info( '*** Starting network\n')
-    net.build()
-    info( '*** Starting controllers\n')
-    for controller in net.controllers:
-        controller.start()
-
-    info( '*** Starting switches/APs\n')
-    net.get('s1').start([])
-    net.get('s2').start([])
-
-    info( '*** Post configure nodes\n')
-
-    CLI(net)
-    net.stop()
-
-
-if __name__ == '__main__':
-    setLogLevel( 'info' )
-    myNetwork()
-
+  h1.cmd("ifconfig h1-eth0 0")
+  h1.cmd("ip a a 10.0.1.1/24 brd + dev h1-eth0")
+  h2.cmd("ifconfig h2-eth0 0")
+  h2.cmd("ip a a 10.0.2.1/24 brd + dev h2-eth0")
+  h3.cmd("ifconfig h3-eth0 0")
+  h3.cmd("ip a a 10.0.3.1/24 brd + dev h3-eth0")
+  h4.cmd("ifconfig h4-eth0 0")
+  h4.cmd("ip a a 10.0.4.1/24 brd + dev h4-eth0")
+  h5.cmd("ifconfig h5-eth0 0")
+  h5.cmd("ip a a 10.0.5.1/24 brd + dev h5-eth0")
+  h6.cmd("ifconfig h6-eth0 0")
+  h6.cmd("ip a a 10.0.6.1/24 brd + dev h6-eth0")
+  s1.cmd("echo 1 > /proc/sys/net/ipv4/ip_forward")
+  s2.cmd("echo 1 > /proc/sys/net/ipv4/ip_forward")
+  s1.cmd("ip addr add 12.1.1.1/24 brd + dev s1-eth3")
+  s2.cmd("ip addr add 12.1.1.2/24 brd + dev s2-eth3")
+  s1.cmd("ip addr add 10.0.1.254/24 brd + dev s1-eth0")
+  s1.cmd("ip addr add 10.0.2.254/24 brd + dev s1-eth1")
+  s1.cmd("ip addr add 10.0.3.254/24 brd + dev s1-eth2")
+  s2.cmd("ip addr add 10.0.4.254/24 brd + dev s2-eth0")
+  s2.cmd("ip addr add 10.0.5.254/24 brd + dev s2-eth1")
+  s2.cmd("ip addr add 10.0.6.254/24 brd + dev s2-eth2")
+  h1.cmd("ip route add default via 10.0.1.254")
+  h2.cmd("ip route add default via 10.0.2.254")
+  h3.cmd("ip route add default via 10.0.3.254")
+  h4.cmd("ip route add default via 10.0.4.254")
+  h5.cmd("ip route add default via 10.0.5.254")
+  h6.cmd("ip route add default via 10.0.6.254")
+  s1.cmd("ip route add 10.0.4.0/24 via 12.1.1.2")
+  s2.cmd("ip route add 10.0.1.0/24 via 12.1.1.1")
+  s1.cmd("ip route add 10.0.5.0/24 via 12.1.1.2")
+  s2.cmd("ip route add 10.0.2.0/24 via 12.1.1.1")
+  s1.cmd("ip route add 10.0.6.0/24 via 12.1.1.2")
+  s2.cmd("ip route add 10.0.3.0/24 via 12.1.1.1")
+  CLI(net)
+  net.stop()
 ```
+
+* plot.plt
+```
+plot "h1pingh4" with linespoints, "h2pingh5" with linespoints, "h3pingh6" with linespoints
+set xlabel "time (sec)"
+set ylabel "throughput (Mbps)"
+set xrange [1:10]
+set xtics 0,1,10
+set yrange [0:10]
+set ytics 0,1,10
+set title "ping Throughput"
+set terminal gif
+set output "result.gif"
+replot
+```
+
 * 執行指令
 ```
-# ./test2.py
+# python test3.py
 mininet> xterm h1 h2 h3 h4 h5 h6
 h4> iperf -s -i 1 | tee h1h4result
 h1> iperf -c 10.0.0.4 -t 10
@@ -241,7 +269,17 @@ h5> iperf -s -i 1 | tee h2h5result
 h2> iperf -c 10.0.0.5 -t 10
 h6> iperf -s -i 1 | tee h3h6result
 h3> iperf -c 10.0.0.6 -t 10
+mininet> exit
+# cat h1h4result | grep "sec" | head -n 10 | tr "-" " " | awk '{print $4,$8}' > h1pingh4
+# cat h2h5result | grep "sec" | head -n 10 | tr "-" " " | awk '{print $4,$8}' > h2pingh5
+# cat h3h6result | grep "sec" | head -n 10 | tr "-" " " | awk '{print $4,$8}' > h3pingh6
+# gnuplot plot.plt
 ```
+
+* 執行結果
+
+![](W10-8.png)
+
 ## 4. h1 可用ssh和https
 
 ![](W10-6.jpg)
